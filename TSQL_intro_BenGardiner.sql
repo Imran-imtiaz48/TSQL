@@ -49,8 +49,8 @@ SELECT CONCAT('The sum of ', @Num1, ' and ', @Num2, ' is ', @result);
 END
 
 -- task 3 
-drop table if EXISTS Account;
-drop table if EXISTS log;
+DROP TABLE IF EXISTS Account;
+DROP TABLE IF EXISTS LOG;
 
 CREATE TABLE Account(
 AcctNo INT, 
@@ -63,7 +63,7 @@ PRIMARY KEY (AcctNo)
 
 CREATE TABLE LOG(
 ORGAcct INT, 
-LOGDateTime DATETIME, 
+LOGDateTime SMALLDATETIME, 
 RecAccnt INT, 
 Amount int,
 PRIMARY KEY (ORGAcct, LOGDateTime),
@@ -75,8 +75,10 @@ insert into Account VALUES
 ('1', 'Ben', 'Gardiner', '5000', '1000'),
 ('2', 'Tony', 'Beroni', '55500', '105500');
 
-GO
 
+
+
+GO
 
 
 drop procedure if EXISTS creditTransfer
@@ -86,20 +88,23 @@ go
 Create procedure creditTransfer @ORGAcct INT, @RecAccnt INT, @Amount INT
 As 
 Begin 
-    declare @datetime DATETIME
+    declare @datetime SMALLDATETIME
+    
+
+    SET @datetime = DATE
     UPDATE Account SET Balance = Balance - @Amount 
     WHERE AcctNo = @ORGAcct
 
     UPDATE Account SET Balance = Balance + @Amount 
     WHERE AcctNo = @RecAccnt
 
-    INSERT into LOG (@ORGAcct, , )
-    
+    INSERT into LOG (@ORGAcct, LOGDateTime, RecAccnt, Amount)
+    VALUES (@ORGAcct, @datetime, @RecAccnt, @Amount)
     
     
     declare @transfer INTEGER;
     set @ = @ORGAcct * @Param2;
-    SELECT CONCAT('The sum of ', @Param1, ' and ', @Param2, ' is ', @product);
+    SELECT )
 
 End 
 
