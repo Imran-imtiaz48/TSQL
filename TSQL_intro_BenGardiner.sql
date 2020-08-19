@@ -49,8 +49,9 @@ SELECT CONCAT('The sum of ', @Num1, ' and ', @Num2, ' is ', @result);
 END
 
 -- task 3 
-DROP TABLE IF EXISTS Account;
 DROP TABLE IF EXISTS LOG;
+DROP TABLE IF EXISTS Account;
+
 
 CREATE TABLE Account(
 AcctNo INT, 
@@ -63,7 +64,7 @@ PRIMARY KEY (AcctNo)
 
 CREATE TABLE LOG(
 ORGAcct INT, 
-LOGDateTime SMALLDATETIME, 
+LOGDateTime DATETIME2, 
 RecAccnt INT, 
 Amount int,
 PRIMARY KEY (ORGAcct, LOGDateTime),
@@ -75,41 +76,35 @@ insert into Account VALUES
 ('1', 'Ben', 'Gardiner', '5000', '1000'),
 ('2', 'Tony', 'Beroni', '55500', '105500');
 
-
-
-
 GO
-
 
 drop procedure if EXISTS creditTransfer
 
-go
+GO
 
-Create procedure creditTransfer @ORGAcct INT, @RecAccnt INT, @Amount INT
+Create procedure creditTransfer @ORGAcct INT, @RecAccnt INT, @Amount INT, @dateTime DATETIME2
+
 As 
-Begin 
-    declare @datetime SMALLDATETIME
-    
 
-    SET @datetime = DATE
-    UPDATE Account SET Balance = Balance - @Amount 
+Begin 
+    
+    UPDATE Account SET Balance = Balance - @Amount
     WHERE AcctNo = @ORGAcct
 
     UPDATE Account SET Balance = Balance + @Amount 
     WHERE AcctNo = @RecAccnt
 
-    INSERT into LOG (@ORGAcct, LOGDateTime, RecAccnt, Amount)
-    VALUES (@ORGAcct, @datetime, @RecAccnt, @Amount)
-    
-    
-    declare @transfer INTEGER;
-    set @ = @ORGAcct * @Param2;
-    SELECT )
+    INSERT INTO LOG (ORGAcct, LOGDateTime, RecAccnt, Amount)
+    VALUES (@ORGAcct, SYSDATETIME(), @RecAccnt, @Amount);
 
 End 
 
-Go
-
-exec creditTransfer 
+exec creditTransfer @ORGAcct = 1, @RecAccnt = 2, @Amount = 300, @dateTime = sysdatetime;
 
 GO 
+
+SELECT *
+fROM Account;
+
+SELECT *
+fROM [LOG];
