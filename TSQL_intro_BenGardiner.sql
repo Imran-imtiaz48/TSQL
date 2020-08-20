@@ -64,7 +64,7 @@ PRIMARY KEY (AcctNo)
 
 CREATE TABLE LOG(
 ORGAcct INT, 
-LOGDateTime DATETIME2, 
+LOGDateTime DATETIME, 
 RecAccnt INT, 
 Amount int,
 PRIMARY KEY (ORGAcct, LOGDateTime),
@@ -82,7 +82,7 @@ drop procedure if EXISTS creditTransfer
 
 GO
 
-Create procedure creditTransfer @ORGAcct INT, @RecAccnt INT, @Amount INT, @dateTime DATETIME2
+Create procedure creditTransfer @ORGAcct INT, @RecAccnt INT, @Amount INT
 
 As 
 
@@ -97,9 +97,13 @@ Begin
     INSERT INTO LOG (ORGAcct, LOGDateTime, RecAccnt, Amount)
     VALUES (@ORGAcct, SYSDATETIME(), @RecAccnt, @Amount);
 
+    
+
 End 
 
-exec creditTransfer @ORGAcct = 1, @RecAccnt = 2, @Amount = 300, @dateTime = sysdatetime;
+GO
+
+exec creditTransfer @ORGAcct = 1, @RecAccnt = 2, @Amount = 300;
 
 GO 
 
